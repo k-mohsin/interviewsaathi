@@ -35,7 +35,7 @@ export default function FeedbackDashboard({
   totalScore,
   categoryScores,
 }: FeedbackDashboardProps) {
-  /* -------------------- DERIVED ANALYTICS -------------------- */
+  /* -------------------- DERIVED ANALYTICS ------------------- */
 
   const weakestSkill = categoryScores.reduce((a, b) =>
     a.score < b.score ? a : b
