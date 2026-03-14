@@ -2,7 +2,6 @@
 
 An AI-powered mock interview platform that helps you practice job interviews in multiple languages using voice.
 
-Built by Group A11 under the guidance of **Dr. Siddharth Hariharan**.
 
 ---
 
