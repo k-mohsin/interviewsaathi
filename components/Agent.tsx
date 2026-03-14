@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 import { vapi } from "@/lib/vapi.sdk";
-import { interviewer } from "@/constants";
+import { getInterviewer } from "@/constants"; // ✅ changed from interviewer to getInterviewer
 import { createFeedback } from "@/lib/actions/general.action";
 
 enum CallStatus {
@@ -28,6 +28,7 @@ const Agent = ({
   feedbackId,
   type,
   questions,
+  language, // ✅ added language prop
 }: AgentProps) => {
   const router = useRouter();
   const [callStatus, setCallStatus] = useState<CallStatus>(CallStatus.INACTIVE);
@@ -138,38 +139,14 @@ const Agent = ({
           .join("\n");
       }
 
-      await vapi.start(interviewer, {
+      // ✅ Now passes language to getInterviewer
+      await vapi.start(getInterviewer(language || "English"), {
         variableValues: {
           questions: formattedQuestions,
         },
       });
     }
   };
-  // const handleCall = async () => {
-  //   setCallStatus(CallStatus.CONNECTING);
-
-  //   if (type === "generate") {
-  //     await vapi.start(process.env.NEXT_PUBLIC_VAPI_WORKFLOW_ID!, {
-  //       variableValues: {
-  //         username: userName,
-  //         userid: userId,
-  //       },
-  //     });
-  //   } else {
-  //     let formattedQuestions = "";
-  //     if (questions) {
-  //       formattedQuestions = questions
-  //         .map((question) => `- ${question}`)
-  //         .join("\n");
-  //     }
-
-  //     await vapi.start(interviewer, {
-  //       variableValues: {
-  //         questions: formattedQuestions,
-  //       },
-  //     });
-  //   }
-  // };
 
   const handleDisconnect = () => {
     setCallStatus(CallStatus.FINISHED);
@@ -234,7 +211,6 @@ const Agent = ({
                 callStatus !== "CONNECTING" && "hidden"
               )}
             />
-
             <span className="relative">
               {callStatus === "INACTIVE" || callStatus === "FINISHED"
                 ? "Call"

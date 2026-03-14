@@ -4,48 +4,106 @@ import { google } from "@ai-sdk/google";
 import { db } from "@/firebase/admin";
 import { getRandomInterviewCover } from "@/lib/utils";
 
+function safeJsonParse(text: string) {
+  const cleaned = text
+    .replace(/```json/gi, "")
+    .replace(/```/g, "")
+    .trim();
+
+  return JSON.parse(cleaned);
+}
+
 export async function POST(request: Request) {
-  const { type, role, level, techstack, amount, userid } = await request.json();
+  // Added "language" here
+  const { type, role, level, techstack, amount, userid, language } =
+    await request.json();
+
+  // Default to English if no language provided
+  const interviewLanguage = language || "English";
 
   try {
-    const { text: questions } = await generateText({
-      model: google("gemini-2.0-flash-001"),
-      prompt: `Prepare questions for a job interview.
-        The job role is ${role}.
-        The job experience level is ${level}.
-        The tech stack used in the job is: ${techstack}.
-        The focus between behavioural and technical questions should lean towards: ${type}.
-        The amount of questions required is: Minimum ${amount} Maximum 200.
-        Please return only the questions, without any additional text.
-        The questions are going to be read by a voice assistant so do not use "/" or "*" or any other special characters which might break the voice assistant.
-        Return the questions formatted like this:
-        ["Question 1", "Question 2", "Question 3"]
-        
-        Thank you! <3
-    `,
+    const { text } = await generateText({
+      model: google("gemini-2.5-flash"),
+      responseFormat: "json",
+      generationConfig: {
+        temperature: 0.3,
+        maxOutputTokens: 800
+      },
+
+      prompt: `
+Prepare interview questions.
+
+Role: ${role}
+Experience level: ${level}
+Tech stack: ${techstack}
+Focus: ${type}
+Number of questions: ${Math.min(amount, 10)}
+Language: ${interviewLanguage}
+
+Rules:
+- Return ONLY a JSON array of strings
+- Write ALL questions in ${interviewLanguage} language
+- No markdown
+- No explanations
+- No special characters like / or *
+`
     });
 
+    let parsedQuestions;
+    try {
+      parsedQuestions = safeJsonParse(text);
+    } catch (err) {
+      console.error("Invalid AI JSON:", text);
+      return Response.json(
+        { success: false, error: "AI returned invalid JSON" },
+        { status: 500 }
+      );
+    }
+
+    if (!Array.isArray(parsedQuestions)) {
+      return Response.json(
+        { success: false, error: "Questions is not an array" },
+        { status: 500 }
+      );
+    }
+
     const interview = {
-      role: role,
-      type: type,
-      level: level,
+      role,
+      type,
+      level,
       techstack: techstack.split(","),
-      questions: JSON.parse(questions),
+      questions: parsedQuestions,
       userId: userid,
+      language: interviewLanguage, // ✅ Save language to database
       finalized: true,
       coverImage: getRandomInterviewCover(),
-      createdAt: new Date().toISOString(),
+      createdAt: new Date().toISOString()
     };
 
     await db.collection("interviews").add(interview);
 
     return Response.json({ success: true }, { status: 200 });
-  } catch (error) {
-    console.error("Error:", error);
-    return Response.json({ success: false, error: error }, { status: 500 });
+
+  } catch (error: any) {
+    console.error("API ERROR:", error?.message || error);
+
+    if (error?.message?.includes("Quota")) {
+      return Response.json(
+        { success: false, error: "AI quota exceeded. Try later." },
+        { status: 429 }
+      );
+    }
+
+    return Response.json(
+      { success: false, error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }
 
 export async function GET() {
-  return Response.json({ success: true, data: "Thank you!" }, { status: 200 });
+  return Response.json(
+    { success: true, data: "Thank you!" },
+    { status: 200 }
+  );
 }

@@ -23,6 +23,7 @@ interface Interview {
   userId: string;
   type: string;
   finalized: boolean;
+  language?: string; // ✅ ADD THIS
 }
 
 interface CreateFeedbackParams {
@@ -54,6 +55,7 @@ interface AgentProps {
   feedbackId?: string;
   type: "generate" | "interview";
   questions?: string[];
+  language?: string; // ✅ ADD THIS
 }
 
 interface RouteParams {
