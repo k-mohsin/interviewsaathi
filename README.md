@@ -1,116 +1,141 @@
-# 🚀 InterviewSaathi – Repository Initialization
+# 🎤 InterviewSaathi
 
-This repository contains the source code for **InterviewSaathi**, an AI-powered mock interview platform that generates interview questions, evaluates answers using AI, and provides performance analytics.
+An AI-powered mock interview platform that helps you practice job interviews in multiple languages using voice.
 
-## 🎯 Project Goal
-
-Build an AI-based interview preparation platform that helps users practice interviews, receive AI feedback, and track their improvement through dashboards.
-
-## 🛠 Tech Stack
-
-* **Frontend:** Next.js, React, TypeScript
-* **UI:** TailwindCSS, Radix UI / Shadcn
-* **AI Integration:** VAPI AI / Gemini
-* **Backend:** Next.js API routes
-* **Database:** Firebase
-* **Visualization:** Chart.js / Dashboard Analytics
-* **Version Control:** Git + GitHub
-
-## 📂 Repository Structure
-
-```
-app/            → Next.js app router pages
-components/     → Reusable UI components
-constants/      → Static configuration data
-firebase/       → Firebase configuration
-lib/            → Utility functions and AI logic
-types/          → TypeScript interfaces
-public/         → Static assets
-```
-
-## 👥 Team Responsibilities
-
-### Repository Management
-
-* Branch strategy
-* Pull request reviews
-* Merge conflict resolution
-
-### Dashboard & Analytics
-
-* Interview performance dashboards
-* Data visualization using Chart.js
-
-### AI Workflow
-
-* Interview question generation
-* AI answer evaluation
-* VAPI AI integration
-
-## 🌱 Branching Strategy
-
-* `main` → stable production branch
-* `dev` → development branch
-* `feature/<feature-name>` → new feature development
-* `bugfix/<issue-name>` → bug fixes
-
-Example:
-
-```
-feature/dashboard-analytics
-feature/ai-interview-flow
-```
-
-## 📌 Contribution Workflow
-
-1. Clone the repository
-2. Create a new branch from `dev`
-
-```
-git checkout dev
-git pull origin dev
-git checkout -b feature/your-feature-name
-```
-
-3. Make your changes and commit
-
-```
-git add .
-git commit -m "feat: add dashboard visualization"
-```
-
-4. Push your branch
-
-```
-git push origin feature/your-feature-name
-```
-
-5. Create a **Pull Request** to `dev`
-
-## 📋 Commit Message Convention
-
-```
-feat: add new feature
-fix: bug fix
-docs: documentation update
-refactor: code improvement
-style: UI updates
-```
-
-Example:
-
-```
-feat: implement interview analytics dashboard
-```
-
-## 🚧 Current Development Areas
-
-* AI Interview Question Generation
-* AI Feedback System
-* Dashboard Analytics
-* User Authentication
-* Interview History Tracking
+Built by Group A11 under the guidance of **Dr. Siddharth Hariharan**.
 
 ---
 
-Maintainer: **Mohsin – GitHub Repository Manager**
+## 🤔 What does it do?
+
+- You talk to an AI interviewer using your voice
+- It asks you real interview questions based on your role and tech stack
+- After the interview it gives you detailed feedback and score
+- Supports multiple languages like Hindi, English, Spanish and more
+
+---
+
+## 🛠️ Tech used
+
+- **Next.js** - for the website
+- **Firebase** - to save user data and login
+- **Vapi AI** - for the voice calling part
+- **Google Gemini** - to generate interview questions
+- **Tailwind CSS** - for styling
+- **OpenAI GPT-4o-mini** - for the actual interview conversation
+
+---
+
+## ✨ Features
+
+- 🔐 Login and Signup with email/password
+- 🎙️ Voice interview with AI
+- 🌍 Multiple language support (Hindi, English, Spanish, French and more)
+- 📊 Detailed feedback with score after interview
+- 📱 Works on mobile too
+
+---
+
+## 🚀 How to run this project
+
+### Step 1 - Clone the repo
+```bash
+git clone https://github.com/k-mohsin/interviewsaathi.git
+cd interviewsaathi
+```
+
+### Step 2 - Install dependencies
+```bash
+npm install
+```
+
+### Step 3 - Create `.env.local` file
+Create a file called `.env.local` in the root folder and add these:
+```env
+NEXT_PUBLIC_VAPI_WEB_TOKEN=
+NEXT_PUBLIC_VAPI_WORKFLOW_ID=
+
+GOOGLE_GENERATIVE_AI_API_KEY=
+
+NEXT_PUBLIC_BASE_URL=
+
+NEXT_PUBLIC_FIREBASE_API_KEY=
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=
+NEXT_PUBLIC_FIREBASE_APP_ID=
+
+FIREBASE_PROJECT_ID=
+FIREBASE_CLIENT_EMAIL=
+FIREBASE_PRIVATE_KEY=
+```
+
+You need to get these values from:
+- [Firebase Console](https://firebase.google.com)
+- [Vapi Dashboard](https://dashboard.vapi.ai)
+- [Google AI Studio](https://aistudio.google.com)
+
+### Step 4 - Run it
+```bash
+npx next dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser
+
+---
+
+## 🌍 Supported Languages
+
+| Language | Voice | Transcription |
+|----------|-------|--------------|
+| English | ElevenLabs Sarah | ✅ |
+| Hindi | OpenAI Alloy | ✅ |
+| Spanish | OpenAI Alloy | ✅ |
+| French | OpenAI Alloy | ✅ |
+| German | OpenAI Alloy | ✅ |
+| Arabic | OpenAI Alloy | ✅ |
+| Japanese | OpenAI Alloy | ✅ |
+| Korean | OpenAI Alloy | ✅ |
+| Chinese | OpenAI Alloy | ✅ |
+| Russian | OpenAI Alloy | ✅ |
+
+---
+
+## 📁 Project Structure
+```
+interviewSaathi/
+├── app/              # all pages
+├── components/       # reusable components
+├── constants/        # config and constants
+├── firebase/         # firebase setup
+├── lib/              # helper functions
+├── public/           # images and assets
+└── types/            # typescript types
+```
+
+---
+
+## 🌿 Branch Structure
+
+This repo has multiple branches, each for a different stage of development:
+
+| Branch | What's in it |
+|--------|-------------|
+| `main` | Stable production ready code |
+| `dev` | Latest development changes |
+| `feature/interview` | Basic interview flow implementation |
+| `feature/interview-generation-api` | API for generating interview questions |
+| `feature/multi-language-interview` | Multilanguage support (Hindi, Spanish etc) |
+
+### How we work
+```
+main (stable)
+  ↑
+dev (testing)
+  ↑
+feature/xxx (new features)
+```
+
+
+---
