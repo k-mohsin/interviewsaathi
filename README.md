@@ -77,7 +77,7 @@ You need to get these values from:
 
 ### Step 4 - Run it
 ```bash
-npx next dev
+npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser
