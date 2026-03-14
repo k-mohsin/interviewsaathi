@@ -4,7 +4,6 @@ import { google } from "@ai-sdk/google";
 import { db } from "@/firebase/admin";
 import { getRandomInterviewCover } from "@/lib/utils";
 
-// Helper to safely parse AI JSON
 function safeJsonParse(text: string) {
   const cleaned = text
     .replace(/```json/gi, "")
