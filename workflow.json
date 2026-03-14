@@ -1,0 +1,98 @@
+{
+  "name": "InterviewSaathi",
+  "nodes": [
+    {
+      "type": "conversation",
+      "name": "introduction",
+      "isStart": true,
+      "prompt": "Greet the user in whatever language they speak to you in. Inform them that you will collect some information to create a perfect interview. Ask the questions one by one, and await an answer before asking the next.",
+      "variableExtractionPlan": {
+        "output": [
+          {
+            "type": "string",
+            "title": "role",
+            "description": "What role would you like to train for? For example Frontend, Backend, Fullstack, Design, UX?",
+            "enum": []
+          },
+          {
+            "type": "string",
+            "title": "type",
+            "description": "What type of interview should it be? For example Technical, Behavioral, or Mixed?",
+            "enum": []
+          },
+          {
+            "type": "string",
+            "title": "level",
+            "description": "The job experience level. For example Junior, Mid, or Senior.",
+            "enum": []
+          },
+          {
+            "type": "number",
+            "title": "amount",
+            "description": "How many questions would you like to generate?"
+          },
+          {
+            "type": "string",
+            "title": "techstack",
+            "description": "A list of technologies to cover during the job interview.",
+            "enum": []
+          },
+          {
+            "type": "string",
+            "title": "language",
+            "description": "What language should the interview be conducted in? For example English, Hindi, Spanish, French, German, Arabic.",
+            "enum": []
+          }
+        ]
+      },
+      "messagePlan": {
+        "firstMessage": "Hey there! Welcome to Interview Saathi."
+      }
+    },
+    {
+      "type": "apiRequest",
+      "name": "generateInterview",
+      "mode": "blocking",
+      "url": "https://ai-mock-interviews-one-alpha.vercel.app/api/vapi/generate",
+      "method": "POST",
+      "body": {
+        "type": "object",
+        "properties": {
+          "role":      { "type": "string", "value": "{{role}}" },
+          "type":      { "type": "string", "value": "{{type}}" },
+          "level":     { "type": "string", "value": "{{level}}" },
+          "amount":    { "type": "number", "value": "{{amount}}" },
+          "userid":    { "type": "string", "value": "{{userid}}" },
+          "techstack": { "type": "string", "value": "{{techstack}}" },
+          "language":  { "type": "string", "value": "{{language}}" }
+        }
+      },
+      "messagePlan": {
+        "firstMessage": "Please hold on while I generate your interview."
+      }
+    },
+    {
+      "type": "hangup",
+      "name": "endCall"
+    }
+  ],
+  "edges": [
+    {
+      "from": "introduction",
+      "to": "generateInterview",
+      "condition": {
+        "type": "ai",
+        "prompt": "Move forward when user has provided all variables: role, type, level, amount, techstack, and language"
+      }
+    },
+    {
+      "from": "generateInterview",
+      "to": "endCall",
+      "condition": {
+        "type": "ai",
+        "prompt": "After the API request is complete"
+      }
+    }
+  ],
+  "globalPrompt": "You are a voice assistant helping users create AI-powered mock interviews. Detect the language the user is speaking and respond in that same language throughout the entire conversation. Do not use any special characters or markdown - this is a voice conversation."
+}
