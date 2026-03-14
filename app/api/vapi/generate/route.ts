@@ -4,7 +4,6 @@ import { google } from "@ai-sdk/google";
 import { db } from "@/firebase/admin";
 import { getRandomInterviewCover } from "@/lib/utils";
 
-// Helper to safely parse AI JSON
 function safeJsonParse(text: string) {
   const cleaned = text
     .replace(/```json/gi, "")
@@ -15,11 +14,11 @@ function safeJsonParse(text: string) {
 }
 
 export async function POST(request: Request) {
-  // ✅ Added "language" here
+  // Added "language" here
   const { type, role, level, techstack, amount, userid, language } =
     await request.json();
 
-  // ✅ Default to English if no language provided
+  // Default to English if no language provided
   const interviewLanguage = language || "English";
 
   try {
