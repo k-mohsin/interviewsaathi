@@ -66,7 +66,7 @@ const Feedback = async ({ params }: RouteParams) => {
         categoryScores={feedback.categoryScores}
       />
 
-      {/* Final Assessment */}
+      {/* Final Assessment  */}
       <p className="my-6">{feedback.finalAssessment}</p>
 
       {/* Interview Breakdown */}
