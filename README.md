@@ -139,3 +139,7 @@ feature/xxx (new features)
 
 
 ---
+## 📬 Contact
+ 
+GitHub: [@k-mohsin](https://github.com/k-mohsin)  
+LinkedIn: [k-mohsin](https://www.linkedin.com/in/k-mohsin)
